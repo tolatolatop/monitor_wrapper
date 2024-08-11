@@ -30,8 +30,9 @@ def generate_wrapper_script(binary_path, log_prefix):
     script_content = f"""#!/bin/bash
 LOG_FILE="{log_prefix}.log"
 TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
-echo "[$TIMESTAMP] Executing: {binary_path} $@" >> "$LOG_FILE"
-echo "[$TIMESTAMP] Environment: $(env)" >> "$LOG_FILE"
+RID=$(cat /dev/random | tr -dc a-zA-Z0-9 | head -c 12;echo)
+echo "[$TIMESTAMP][$RID] Executing: {binary_path} $@" >> "$LOG_FILE"
+echo "[$TIMESTAMP][$RID] Environment: $(env)" >> "$LOG_FILE"
 
 # 执行原始二进制文件
 "{binary_path}_real" "$@"
